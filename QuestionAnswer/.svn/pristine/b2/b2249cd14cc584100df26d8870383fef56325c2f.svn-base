@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/layout_toolbar"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/theme_green"
+        android:gravity="center"
+        android:paddingBottom="@dimen/margin_space__16"
+        android:paddingTop="@dimen/margin_space__16">
+
+        <com.ssdut411.app.questionanswer.widget.CircularImage
+            android:id="@+id/iv_info_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/role_student" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/touch_view_48"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="王小明"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    "/>
+        <TextView
+            android:id="@+id/tv_info_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男"/>
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="    "/>
+        <TextView
+            android:id="@+id/tv_info_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12岁"/>
+        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_class"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/touch_view_48"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tv_info_school"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="希望小学"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="    "/>
+        <TextView
+            android:id="@+id/tv_info_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2年级3班"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="96dp"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_info_address"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_view_48"
+            android:text="辽宁省大连市"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/tv_info_contact"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_view_48"
+            android:text="18840824301"
+            android:gravity="center"/>
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/tv_set_role"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/touch_view_48"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="设为家长"
+        android:textColor="@color/font_white"
+        android:textSize="@dimen/font_size_menu"/>
+</LinearLayout>

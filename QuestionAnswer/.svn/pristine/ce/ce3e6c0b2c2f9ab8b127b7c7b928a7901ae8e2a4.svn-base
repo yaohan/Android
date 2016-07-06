@@ -1,0 +1,51 @@
+package com.ssdut411.app.questionanswer.activity.person;
+
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+
+/**
+ * Created by yao_han on 2016/3/23.
+ */
+public class AddSchoolActivity extends BaseActivity {
+    private LinearLayout llSchool,llClass;
+    private TextView tvProvince,tvCity,tvArea,tvSchool,tvGrade,tvClass;
+    @Override
+    protected String initTitle() {
+        return "新增学校";
+    }
+
+    @Override
+    protected int initMenu() {
+        return 0;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_add_school;
+    }
+
+    @Override
+    protected void initViews() {
+        llSchool = getLinearLayout(R.id.layout_school);
+        llClass = getLinearLayout(R.id.layout_class);
+        tvProvince = getTextView(R.id.tv_add_province);
+        tvCity = getTextView(R.id.tv_add_city);
+        tvArea = getTextView(R.id.tv_add_area);
+        tvSchool = getTextView(R.id.tv_add_school);
+        tvGrade = getTextView(R.id.tv_add_grade);
+        tvClass = getTextView(R.id.tv_add_class);
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void showView() {
+
+    }
+}

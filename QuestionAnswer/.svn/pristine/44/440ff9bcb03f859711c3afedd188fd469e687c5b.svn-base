@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background_white"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/activity_vertical_margin" />
+
+    <RelativeLayout
+        android:id="@+id/rl_post_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/touch_view_48"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/tv_post_name"
+            android:layout_width="@dimen/margin_content_72"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/self_test_name"
+            android:textColor="?attr/font_black"
+            android:textSize="@dimen/font_size_normal" />
+
+        <EditText
+            android:id="@+id/et_post_name"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_content_72"
+            android:layout_toRightOf="@+id/tv_post_name"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:gravity="center"
+            android:selectAllOnFocus="true"
+            android:text="@string/empty"
+            android:textColor="?attr/font_black"
+            android:textSize="@dimen/font_size_normal" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_post_point"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/touch_view_48"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tv_post_point"
+            android:layout_width="@dimen/margin_content_72"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/knowledge_point"
+            android:textColor="?attr/font_black"
+            android:textSize="@dimen/font_size_normal" />
+
+        <EditText
+            android:id="@+id/et_post_select"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_content_72"
+            android:layout_toRightOf="@+id/tv_post_point"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:editable="false"
+            android:focusable="false"
+            android:gravity="center"
+            android:selectAllOnFocus="true"
+            android:text="@string/select_random"
+            android:textColor="?attr/font_black"
+            android:textSize="@dimen/font_size_normal" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/touch_view_48"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tv_post_count"
+            android:layout_width="@dimen/margin_content_72"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/number"
+            android:textColor="?attr/font_black"
+            android:textSize="@dimen/font_size_normal" />
+
+        <EditText
+            android:id="@+id/et_post_count"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_head_40"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_post_ge"
+            android:layout_toRightOf="@+id/tv_post_count"
+            android:layout_marginLeft="@dimen/margin_content_72"
+            android:inputType="number"
+            android:gravity="center"
+            android:selectAllOnFocus="true"
+            android:text="@string/number_20"
+            android:textColor="?attr/font_black"
+            android:textSize="@dimen/font_size_normal" />
+
+        <TextView
+            android:id="@+id/tv_post_ge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/activity_vertical_margin"
+            android:text="@string/ge"
+            android:textColor="?attr/font_black"
+            android:textSize="@dimen/font_size_normal" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:gravity="center">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/bt_post_start"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/touch_view_48"
+            android:layout_weight="2"
+            android:background="@drawable/shape_button_solid"
+            android:text="@string/create_test"
+            android:textColor="?attr/font_white"
+            android:textSize="@dimen/font_size_normal" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+</LinearLayout><!-- From: file:/D:/Android/Project/QuestionAnswer/app/src/main/res/layout/activity_post_homework.xml -->

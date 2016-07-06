@@ -1,0 +1,337 @@
+package com.ssdut411.app.questionanswer.activity.system;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
+import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.person.LoginActivity;
+import com.ssdut411.app.questionanswer.activity.person.SelectRoleActivity;
+import com.ssdut411.app.questionanswer.activity.person.InfoActivity;
+import com.ssdut411.app.questionanswer.activity.person.SetActivity;
+import com.ssdut411.app.questionanswer.application.MainApplication;
+import com.ssdut411.app.questionanswer.model.event.DrawerInfoEvent;
+import com.ssdut411.app.questionanswer.model.model.UserModel;
+import com.ssdut411.app.questionanswer.utils.ActivityStackUtils;
+import com.ssdut411.app.questionanswer.utils.KeyBoardUtils;
+import com.ssdut411.app.questionanswer.utils.L;
+import com.ssdut411.app.questionanswer.utils.SPUtils;
+import com.ssdut411.app.questionanswer.utils.T;
+import com.ssdut411.app.questionanswer.widget.GridViewForScrollView;
+import com.ssdut411.app.questionanswer.widget.ListViewForScrollView;
+
+import de.greenrobot.event.EventBus;
+
+/**
+ * Created by yao_han on 2015/11/24.
+ */
+public abstract class BaseActivity extends AppCompatActivity {
+    protected Context context = BaseActivity.this;
+    protected Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    protected Boolean theme;
+    private SparseArray<View> views = new SparseArray<View>();
+    private long firstTime = 0, intercal = 2000;
+    private boolean hasTips = false;
+
+    @Override
+    protected void onResume() {
+        setDrawerView();
+        /**
+         * 设置为横屏
+         */
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        super.onResume();
+    }
+
+    private void setDrawerView(){
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActivityStackUtils.getInstance().addActivity(this);
+        L.i("activity:"+ActivityStackUtils.getInstance().toString());
+        theme = (Boolean)SPUtils.get(context,"theme",true);
+//        T.showShort(context,"theme:"+theme);
+        if(theme){
+            setTheme(R.style.DayTheme);
+        }else{
+            setTheme(R.style.NightTheme);
+        }
+        setContentView(this.initContentView());
+        initToolbar();
+        KeyBoardUtils.closeKeyboard(new EditText(this), this);
+        initViews();
+        loadData();
+        showView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityStackUtils.getInstance().removeActivity(this);
+        L.i("activity:" + ActivityStackUtils.getInstance().toString());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        if (initMenu() == 0) {
+            getMenuInflater().inflate(R.menu.menu_null, menu);
+        } else {
+            getMenuInflater().inflate(this.initMenu(), menu);
+        }
+        return true;
+    }
+    /**
+     * 初始化Menu
+     *
+     * @return
+     */
+    protected abstract int initMenu();
+
+    /**
+     * 初始化ContentView
+     *
+     * @return
+     */
+    protected abstract int initContentView();
+
+
+    /**
+     * 初始化view组件
+     */
+    protected abstract void initViews();
+
+    /**
+     * 加载数据
+     */
+    protected abstract void loadData();
+
+    /**
+     * 显示数据
+     */
+    protected abstract void showView();
+
+    private void initToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+    }
+
+    protected void setCanBack() {
+        mToolbar.setNavigationIcon(R.mipmap.ic_arrow_back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    protected void setDrawer() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open,
+                R.string.drawer_close);
+        mDrawerToggle.syncState();
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        UserModel userModel = MainApplication.getInstance().getUser();
+        if(userModel != null){
+            getTextView(R.id.tv_drawer_name).setText(MainApplication.getInstance().getUser().getRealName());
+            getTextView(R.id.tv_drawer_class).setText(MainApplication.getInstance().getUser().getClassName());
+        }
+        if(MainApplication.getInstance().getLogin()){
+            getLinearLayout(R.id.ll_menu_info).setVisibility(View.VISIBLE);
+            getTextView(R.id.tv_menu_register_login).setVisibility(View.GONE);
+        }else{
+            getLinearLayout(R.id.ll_menu_info).setVisibility(View.GONE);
+            getTextView(R.id.tv_menu_register_login).setVisibility(View.VISIBLE);
+        }
+
+
+        getLinearLayout(R.id.ll_menu_person).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartInfoActivity();
+            }
+        });
+
+        getLinearLayout(R.id.ll_menu_role).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartChangeRoleActivity();
+            }
+        });
+        getLinearLayout(R.id.ll_menu_feedback).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                T.showShort(context, getString(R.string.feedback));
+            }
+        });
+        getLinearLayout(R.id.ll_menu_about).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                T.showShort(context, getString(R.string.about_us));
+            }
+        });
+        getLinearLayout(R.id.ll_menu_set).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, SetActivity.class);
+                startActivity(intent);
+            }
+        });
+        getLinearLayout(R.id.ll_menu_change).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SPUtils.put(context,"theme",!theme);
+//                startActivity(new Intent(context,getClass()));
+//                finish();
+                Intent intent = getIntent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }
+        });
+        getLinearLayout(R.id.ll_menu_clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearCache();
+
+            }
+        });
+    }
+
+    private void clearCache(){
+        SPUtils.clear(context);
+        startActivity(new Intent(context, MainActivity.class));
+        finish();
+        MainApplication.getInstance().clear();
+    };
+
+    protected void setBackTips() {
+        hasTips = true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        long secondTime = System.currentTimeMillis();
+        if (hasTips && secondTime - firstTime > intercal) {
+            T.showShort(context, getString(R.string.press_again_exit));
+            firstTime = secondTime;
+        } else {
+            ActivityStackUtils.getInstance().exit();
+//            finish();
+        }
+    }
+
+    private void StartInfoActivity() {
+        if(MainApplication.getInstance().getLogin()){
+            Intent intent = new Intent(context, InfoActivity.class);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(context, LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void StartChangeRoleActivity() {
+        Intent intent = new Intent(context, SelectRoleActivity.class);
+        startActivity(intent);
+    }
+
+    public <T extends View> T getView(int viewId) {
+        View view = views.get(viewId);
+        if (view == null) {
+            view = findViewById(viewId);
+            views.put(viewId, view);
+        }
+        return (T) view;
+    }
+
+    public TextView getTextView(int viewId) {
+        return getView(viewId);
+    }
+
+    public ImageView getImageView(int viewId) {
+        return getView(viewId);
+    }
+
+    public Button getButton(int viewId) {
+        return getView(viewId);
+    }
+
+    public EditText getEditText(int viewId) {
+        return getView(viewId);
+    }
+
+    public ListView getListView(int viewId) {
+        return getView(viewId);
+    }
+    public ExpandableListView getExpandableListView(int viewId) {
+        return getView(viewId);
+    }
+
+    public ListViewForScrollView getListViewForScrollView(int viewId) {
+        return getView(viewId);
+    }
+
+    public GridView getGridView(int viewId) {
+        return getView(viewId);
+    }
+
+    public GridViewForScrollView getGridViewForScrollView(int viewId) {
+        return getView(viewId);
+    }
+
+    public LinearLayout getLinearLayout(int viewId) {
+        return getView(viewId);
+    }
+
+    public RelativeLayout getRelativeLayout(int viewId) {
+        return getView(viewId);
+    }
+
+    public ViewPager getViewPager(int viewId) {
+        return getView(viewId);
+    }
+
+    public RadioButton getRadioButton(int viewId) {
+        return getView(viewId);
+    }
+
+    public RadioGroup getRadioGroup(int viewId) {
+        return getView(viewId);
+    }
+
+    public ScrollView getScrollView(int viewId) {
+        return getView(viewId);
+    }
+}

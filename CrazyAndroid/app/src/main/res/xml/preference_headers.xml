@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header
+        android:fragment="com.example.lenovo.crazyandroid.chapter4.PreferenceTestActivity$Prefs1Fragment"
+        android:icon="@drawable/icon1"
+        android:title="程序选项设置"
+        android:summary="设置应用的相关选项"/>
+    <header
+        android:fragment="com.example.lenovo.crazyandroid.chapter4.PreferenceTestActivity$Prefs2Fragment"
+        android:icon="@drawable/icon2"
+        android:title="程序选项设置"
+        android:summary="设置应用的相关选项">
+        <extra
+            android:name="website"
+            android:value="www.crazyit.org"/>
+    </header>
+    <header
+        android:icon="@drawable/icon3"
+        android:title="使用Intent"
+        android:summary="使用Intent启动某个Activity">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="http://www.crazyit.org"/>
+
+    </header>
+
+</preference-headers>

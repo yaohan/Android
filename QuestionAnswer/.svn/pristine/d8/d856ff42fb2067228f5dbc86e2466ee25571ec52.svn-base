@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="start">
+    <LinearLayout
+        android:id="@+id/ll_menu_person"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@android:color/holo_blue_light"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/view_space_8"
+            android:paddingTop="@dimen/view_space_8"
+            android:src="@mipmap/role_student"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:background="@color/background_white"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_vertical_margin"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_menu_role"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_view_48"
+            android:layout_gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/touch_icon_24"
+                android:layout_height="@dimen/touch_icon_24"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_settings_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/touch_view_48"
+                android:gravity="center"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:text="@string/change_role"
+                android:textColor="?attr/font_black"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_menu_feedback"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_view_48"
+            android:layout_gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="@dimen/touch_icon_24"
+                android:layout_height="@dimen/touch_icon_24"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_help_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/touch_view_48"
+                android:gravity="center"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:text="@string/feedback"
+                android:textColor="?attr/font_black"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_menu_about"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_view_48">
+
+            <ImageView
+                android:layout_width="@dimen/touch_icon_24"
+                android:layout_height="@dimen/touch_icon_24"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_settings_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/touch_view_48"
+                android:gravity="center"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:text="@string/about_us"
+                android:textColor="?attr/font_black"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/divide_gray"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@color/background_white"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_vertical_margin">
+        <LinearLayout
+            android:id="@+id/ll_menu_set"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_view_48">
+
+            <ImageView
+                android:layout_width="@dimen/touch_icon_24"
+                android:layout_height="@dimen/touch_icon_24"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_settings_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/touch_view_48"
+                android:gravity="center"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:text="@string/self_set"
+                android:textColor="?attr/font_black"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_menu_change"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_view_48">
+
+            <ImageView
+                android:layout_width="@dimen/touch_icon_24"
+                android:layout_height="@dimen/touch_icon_24"
+                android:layout_gravity="center_vertical"
+                android:src="@mipmap/ic_help_grey" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/touch_view_48"
+                android:gravity="center"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:text="@string/change_theme"
+                android:textColor="?attr/font_black"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+<!-- From: file:/D:/Android/Project/QuestionAnswer/app/src/main/res/layout/layout_drawer.xml -->

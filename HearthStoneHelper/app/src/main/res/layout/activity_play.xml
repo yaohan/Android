@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_my_hero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" 对阵 " />
+
+        <TextView
+            android:id="@+id/tv_other_hero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/bt_select_other_deck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择对面卡组"
+            android:textColor="@color/font_black"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_play_victory"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="胜利"
+        android:textColor="@color/font_black" />
+
+    <Button
+        android:id="@+id/bt_play_fail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="失败"
+        android:textColor="@color/font_black" />
+    <ListView
+        android:id="@+id/lv_play_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </ListView>
+    <EditText
+        android:id="@+id/et_tips"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="需要注意"
+        android:layout_gravity="start"
+        android:textColor="@color/font_black"/>
+
+</LinearLayout>

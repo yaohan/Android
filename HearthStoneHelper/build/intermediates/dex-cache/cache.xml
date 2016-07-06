@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\Android\Project\HearthStoneHelper\app\libs\gson-2.2.4.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a60a5e993c98c864010053cb901b7eab25306568">
+        <dex dex="D:\Android\Project\HearthStoneHelper\app\build\intermediates\pre-dexed\debug\gson-2.2.4-b749466d7a462bf93cc208dd551bf79a04c6b992.jar" />
+    </item>
+
+</items>

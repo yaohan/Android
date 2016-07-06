@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/layout_toolbar"/>
+    <RelativeLayout
+        android:id="@+id/rl_my_hero"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_8"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/tv_my_hero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的职业："/>
+        <TextView
+            android:id="@+id/tv_my_select_hero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_my_hero"
+            android:text="咆哮德"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_8"
+            android:layout_below="@+id/tv_my_hero"
+            android:text="请选择对面职业"/>
+    </RelativeLayout>
+    <GridView
+        android:id="@+id/gv_view"
+        android:numColumns="3"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"/>
+</LinearLayout>

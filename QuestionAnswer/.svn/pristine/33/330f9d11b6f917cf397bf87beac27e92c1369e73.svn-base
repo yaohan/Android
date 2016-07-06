@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/shape_normal_item">
+
+    <TextView
+        android:id="@+id/tv_options"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/touch_view_48"
+        android:background="@drawable/shape_normal_item"
+        android:gravity="center_vertical"
+        android:textColor="?attr/font_black"
+        android:textSize="@dimen/font_size_normal"/>
+</LinearLayout><!-- From: file:/D:/Android/Project/QuestionAnswer/app/src/main/res/layout/item_options.xml -->

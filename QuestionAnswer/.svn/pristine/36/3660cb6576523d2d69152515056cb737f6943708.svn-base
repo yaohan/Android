@@ -1,0 +1,288 @@
+package com.ssdut411.app.questionanswer.activity.question;
+
+import android.content.Intent;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+import com.ssdut411.app.questionanswer.activity.system.CommonAdapter;
+import com.ssdut411.app.questionanswer.activity.system.ViewHolder;
+import com.ssdut411.app.questionanswer.application.MainApplication;
+import com.ssdut411.app.questionanswer.core.ActionCallbackListener;
+import com.ssdut411.app.questionanswer.core.AppAction;
+import com.ssdut411.app.questionanswer.core.AppActionImpl;
+import com.ssdut411.app.questionanswer.model.Req.GetMyTestReq;
+import com.ssdut411.app.questionanswer.model.Req.GetNewTestReq;
+import com.ssdut411.app.questionanswer.model.Req.GetSelfTestByIdReq;
+import com.ssdut411.app.questionanswer.model.Resp.GetMyTestResp;
+import com.ssdut411.app.questionanswer.model.Resp.GetSelfTestByIdResp;
+import com.ssdut411.app.questionanswer.model.model.SelfTestModel;
+import com.ssdut411.app.questionanswer.utils.GsonUtils;
+import com.ssdut411.app.questionanswer.utils.L;
+import com.ssdut411.app.questionanswer.utils.SPUtils;
+import com.ssdut411.app.questionanswer.utils.T;
+import com.ssdut411.app.questionanswer.widget.EmptyLayout;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by yao_han on 2015/11/29.
+ */
+public class TestHistoryActivity extends BaseActivity {
+
+    private ListView lvList,lvTodayList;
+    private List<GetMyTestResp.TestHistory> list,todayList;
+    private EmptyLayout emptyLayout,todayEmptyLayout;
+
+    @Override
+    protected int initMenu() {
+        return R.menu.menu_new;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_listview;
+    }
+
+    @Override
+    protected void initViews() {
+        lvList = getListView(R.id.lv_post_list);
+        lvList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startQuestionActivity(list.get(position));
+            }
+        });
+
+        lvTodayList = getListView(R.id.lv_today_list);
+        lvTodayList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startQuestionActivity(todayList.get(position));
+            }
+        });
+
+        emptyLayout = new EmptyLayout(this, lvList);
+        emptyLayout.setErrorButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        emptyLayout.showLoading();
+        todayEmptyLayout = new EmptyLayout(this,lvTodayList);
+        todayEmptyLayout.setErrorButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        todayEmptyLayout.showLoading();
+
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.actions_history:
+                        startMyTestActivity();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void startMyTestActivity() {
+        Intent intent = new Intent(context,MyTestActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void loadData() {
+        String strList = SPUtils.get(TestHistoryActivity.this, "SelfTestHistory", "").toString();
+//        if (!strList.equals("")) {
+//            L.i("get history from sp");
+////            List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+//            list = GsonUtils.gsonToList(strList, GetMyTestResp.TestHistory.class);
+//            L.i("list:"+list);
+//            L.i("list thing"+list.get(0).getClass());
+//            L.i("list class" + list.getClass());
+//            setList(list);
+//        } else {
+        getMyList();
+//        }
+
+
+    }
+
+    public void getMyList() {
+        AppAction action = new AppActionImpl(this);
+        GetMyTestReq getMyTestReq = new GetMyTestReq();
+        getMyTestReq.setPsId(MainApplication.getInstance().getUserId());
+        action.getMyTest(getMyTestReq, new ActionCallbackListener<GetMyTestResp>() {
+            @Override
+            public void onSuccess(GetMyTestResp data) {
+                if (data.getResult() == GetMyTestResp.RESULT_SUCCESS) {
+                    list = data.getTestInfoList();
+                    if (list == null) {
+                        emptyLayout.showError();
+                    } else if (list.size() == 0) {
+                        emptyLayout.showEmpty();
+                        todayEmptyLayout.showEmpty();
+                    } else {
+                        L.i("get history from server");
+                        setList(list);
+                        SPUtils.put(TestHistoryActivity.this, "SelfTestHistory", GsonUtils.gsonToJsonString(list));
+                    }
+                } else {
+                    T.showShort(TestHistoryActivity.this, data.getDesc());
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                T.showShort(TestHistoryActivity.this, getString(R.string.error_message));
+                emptyLayout.showError();
+                todayEmptyLayout.showError();
+                L.i("message = " + message);
+            }
+        });
+    }
+
+    private void setList(List<GetMyTestResp.TestHistory> list) {
+        Collections.reverse(list);
+        Date date = new Date();
+        date.setHours(0);
+        date.setMinutes(0);
+        date.setSeconds(0);
+        int i;
+        for(i=0;i<list.size();i++){
+            L.i("date:"+date);
+            L.i("date:"+list.get(i).getNewTime());
+            if((list.get(i).getNewTime().compareTo(date))<0){
+                L.i("before");
+                break;
+            }else{
+                L.i("today");
+            }
+        }
+        L.i("i:"+i);
+        L.i("size:"+list.size());
+        todayList = list.subList(0,i);
+        list = list.subList(i,list.size());
+        L.i("today size:"+todayList.size()+"  list size:"+list.size());
+        if(todayList.size() == 0){
+            todayEmptyLayout.showEmpty();
+        }
+        if(list.size() == 0){
+            emptyLayout.showEmpty();
+        }
+
+        CommonAdapter<GetMyTestResp.TestHistory> adapter = new CommonAdapter<GetMyTestResp.TestHistory>(this, list, R.layout.item_homework) {
+            @Override
+            public void convert(ViewHolder viewHolder, GetMyTestResp.TestHistory testInfo, int position) {
+                viewHolder.getTextView(R.id.item_left).setText(getTime(testInfo.getNewTime()));
+                viewHolder.getTextView(R.id.item_center).setText(testInfo.getName());
+                if (testInfo.getState() == GetNewTestReq.STATE_FINISH) {
+                    viewHolder.getTextView(R.id.item_right).setText(getString(R.string.empty));
+                    viewHolder.getImageView(R.id.item_right_image).setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.getTextView(R.id.item_right).setText(getString(R.string.state_unfinished));
+                    viewHolder.getImageView(R.id.item_right_image).setVisibility(View.GONE);
+                }
+            }
+        };
+        lvList.setAdapter(adapter);
+        CommonAdapter<GetMyTestResp.TestHistory> adapter1 = new CommonAdapter<GetMyTestResp.TestHistory>(context,todayList,R.layout.item_homework) {
+            @Override
+            public void convert(ViewHolder viewHolder, GetMyTestResp.TestHistory testHistory, int position) {
+
+
+                viewHolder.getTextView(R.id.item_left).setText(getTime(testHistory.getNewTime()));
+                viewHolder.getTextView(R.id.item_center).setText(testHistory.getName());
+                if (testHistory.getState() == GetNewTestReq.STATE_FINISH) {
+                    viewHolder.getTextView(R.id.item_right).setText(getString(R.string.empty));
+                    viewHolder.getImageView(R.id.item_right_image).setVisibility(View.VISIBLE);
+                } else {
+                    viewHolder.getTextView(R.id.item_right).setText(getString(R.string.state_unfinished));
+                    viewHolder.getImageView(R.id.item_right_image).setVisibility(View.GONE);
+                }
+            }
+        };
+        lvTodayList.setAdapter(adapter1);
+
+    }
+
+    @Override
+    protected void showView() {
+        String title = getIntent().getStringExtra("title");
+        L.i("title = " + title);
+        if (title == null) {
+            setTitle(getString(R.string.test_history));
+        } else {
+            setTitle(title);
+        }
+        setCanBack();
+    }
+
+    private String getTime(Date date){
+        DecimalFormat df = new DecimalFormat("00");
+        L.i("minute:"+date.getMinutes());
+        L.i("format:"+df.format(date.getMinutes()));
+        return df.format(date.getHours())+":"+df.format(date.getMinutes());
+    }
+    private void startReportCardOrQuestionActivity(SelfTestModel selfTestModel, int state) {
+        Intent intent;
+        if (state == GetNewTestReq.STATE_NOT_FINISH) {
+            intent = new Intent(TestHistoryActivity.this, QuestionActivity.class);
+        } else {
+            intent = new Intent(TestHistoryActivity.this, ReportCardActivity.class);
+            intent.putExtra("source","test");
+        }
+        intent.putExtra("data", selfTestModel);
+        startActivity(intent);
+
+    }
+
+    private void startQuestionActivity(GetMyTestResp.TestHistory testHistory) {
+        final String id = testHistory.getId();
+        final int state = testHistory.getState();
+//        String strModel = SPUtils.get(TestHistoryActivity.this, id, "").toString();
+        String strModel = "";
+        if (!strModel.equals("")) {
+            L.i("get SelfModel from sp");
+            startReportCardOrQuestionActivity(GsonUtils.gsonToObject(strModel, SelfTestModel.class), state);
+        } else {
+            L.i("get SelfModel from server");
+            AppAction action = new AppActionImpl(this);
+            GetSelfTestByIdReq getSelfTestByIdReq = new GetSelfTestByIdReq();
+            getSelfTestByIdReq.setId(id);
+            SelfTestModel selfTestModel;
+            action.getSelfTestById(getSelfTestByIdReq, new ActionCallbackListener<GetSelfTestByIdResp>() {
+                @Override
+                public void onSuccess(GetSelfTestByIdResp data) {
+                    if (data.getResult() == GetSelfTestByIdResp.RESULT_SUCCESS) {
+                        startReportCardOrQuestionActivity(data.getSelfTestModel(), state);
+                        SPUtils.put(TestHistoryActivity.this, id, GsonUtils.gsonToJsonString(data.getSelfTestModel()));
+                    } else {
+                        T.showShort(TestHistoryActivity.this, data.getDesc());
+                    }
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    T.showShort(TestHistoryActivity.this, getString(R.string.error_message));
+                }
+            });
+        }
+    }
+}

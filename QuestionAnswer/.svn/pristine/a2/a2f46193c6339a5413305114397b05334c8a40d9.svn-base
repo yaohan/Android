@@ -1,0 +1,104 @@
+package com.ssdut411.app.questionanswer.activity.teacher;
+
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+import com.ssdut411.app.questionanswer.activity.system.CommonAdapter;
+import com.ssdut411.app.questionanswer.activity.system.ViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by yao_han on 2015/11/28.
+ */
+public class SelectStudentActivity extends BaseActivity implements View.OnClickListener{
+    private LinearLayout llSearch;
+    private TextView tvSure;
+
+    private ListView lvGroup;
+    private List<String> group;
+    private ListView lvStudent;
+    private List<String> student;
+
+
+    @Override
+    protected int initMenu() {
+        return 0;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_select_student;
+    }
+
+    @Override
+    protected void initViews() {
+//        llSearch = getLinearLayout(R.id.ll_title_right);
+        tvSure = getTextView(R.id.tv_student_sure);
+        lvGroup = getListView(R.id.lv_select_group);
+        lvStudent = getListView(R.id.lv_select_student);
+
+        llSearch.setOnClickListener(this);
+        tvSure.setOnClickListener(this);
+    }
+
+    @Override
+    protected void loadData() {
+        group = new ArrayList<String>();
+        group.add("自定义分组");
+        group.add("一年一班");
+        group.add("一年二班");
+        student = new ArrayList<String>();
+        student.add("张三");
+        student.add("李四");
+    }
+
+    @Override
+    protected void showView() {
+        setTitle(getString(R.string.select_student));
+        setCanBack();
+//        setRightText(getString(R.string.search));
+        CommonAdapter<String> groupAdapter = new CommonAdapter<String>(this,group,R.layout.item_listview) {
+            @Override
+            public void convert(ViewHolder viewHolder, String s, int position) {
+                viewHolder.getTextView(R.id.item_center).setText(s);
+                viewHolder.getTextView(R.id.item_right).setText(R.string.all_select);
+            }
+        };
+        lvGroup.setAdapter(groupAdapter);
+        CommonAdapter<String> studentAdapter = new CommonAdapter<String>(this,student,R.layout.item_listview) {
+            @Override
+            public void convert(ViewHolder viewHolder, String s, int position) {
+                viewHolder.getTextView(R.id.item_center).setText(s);
+                viewHolder.getTextView(R.id.item_right).setText(R.string.delete);
+            }
+        };
+        lvStudent.setAdapter(studentAdapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+//            case R.id.ll_title_right:
+//                T.showShort(SelectStudentActivity.this, getString(R.string.function_not_finished));
+//                break;
+            case R.id.tv_student_sure:
+                startQuestionActivity();
+                break;
+        }
+    }
+
+    private void startQuestionActivity() {
+//        Question question = new Question();
+//        Intent intent = new Intent(SelectStudentActivity.this, QuestionActivity.class);
+//        intent.putExtra("question",question);
+//        intent.putExtra("state", QuestionFragment.STATE_CHECK);
+//        startActivity(intent);
+    }
+}

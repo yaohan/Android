@@ -1,0 +1,52 @@
+package com.ssdut411.app.questionanswer.activity.person;
+
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+
+
+/**
+ * Created by yao_han on 2015/11/28.
+ */
+public class RegisterActivity extends BaseActivity {
+
+
+    private EditText etCount;
+    private EditText etCheck;
+    private EditText etPassword;
+    private EditText etPassword2;
+    private ImageView ivSure;
+
+    @Override
+    protected int initMenu() {
+        return R.menu.menu_null;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_register;
+    }
+
+    @Override
+    protected void initViews() {
+        etCount = getEditText(R.id.et_register_count);
+        etCheck = getEditText(R.id.et_register_check);
+        etPassword = getEditText(R.id.et_register_password);
+        etPassword2 = getEditText(R.id.et_register_password2);
+        ivSure = getImageView(R.id.iv_register_sure);
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void showView() {
+        setTitle(getString(R.string.register));
+        setCanBack();
+
+    }
+}

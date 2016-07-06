@@ -1,0 +1,48 @@
+package com.ssdut411.app.questionanswer.activity.system;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.BaseAdapter;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.student.MainPageActivity;
+
+/**
+ * Created by yao_han on 2016/3/2.
+ */
+public class FirstPageActivity extends BaseActivity {
+    @Override
+    protected int initMenu() {
+        return 0;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_firstpage;
+    }
+
+    @Override
+    protected void initViews() {
+        mToolbar.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void showView() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(FirstPageActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        },2000);
+    }
+}

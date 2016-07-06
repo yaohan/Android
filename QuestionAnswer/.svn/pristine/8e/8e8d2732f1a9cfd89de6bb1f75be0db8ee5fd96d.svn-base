@@ -1,0 +1,42 @@
+package com.ssdut411.app.questionanswer.model.Resp;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by yao_han on 2015/12/25.
+ */
+public class GetClazzResp extends BaseResp{
+    public static String DESC_SUCCESS = "获取成功";
+
+    private Map<String,Object> ClazzDetail;
+    private List<String> gradeList;
+    private List<String> clazzList;
+
+    public GetClazzResp() {
+    }
+
+    public Map<String, Object> getClazzDetail() {
+        return ClazzDetail;
+    }
+
+    public void setClazzDetail(Map<String, Object> clazzDetail) {
+        ClazzDetail = clazzDetail;
+    }
+
+    public List<String> getGradeList() {
+        return gradeList;
+    }
+
+    public void setGradeList(List<String> gradeList) {
+        this.gradeList = gradeList;
+    }
+
+    public List<String> getClazzList() {
+        return clazzList;
+    }
+
+    public void setClazzList(List<String> clazzList) {
+        this.clazzList = clazzList;
+    }
+}

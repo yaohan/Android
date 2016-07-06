@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">HearthStoneHelper</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="press_again_exit">再按一次退出</string>
+    <string name="start_game">开始游戏</string>
+    <string name="my_record">我的战绩</string>
+    <string name="warrior">战士</string>
+    <string name="mage">法师</string>
+    <string name="preist">牧师</string>
+    <string name="rouge">盗贼</string>
+    <string name="paladin">骑士</string>
+    <string name="warlock">术士</string>
+    <string name="oruid">德鲁伊</string>
+    <string name="hunter">猎人</string>
+    <string name="shaman">萨满</string>
+    <string name="select_hero">选择英雄</string>
+
+    <string name="empty_message">没有要显示的内容</string>
+    <string name="loading_message">请稍后</string>
+    <string name="error_message">网络异常</string>
+    <string name="empty_button">请重试</string>
+    <string name="loading_button">取消</string>
+    <string name="error_button">再试一次</string>
+    <string name="add">新建</string>
+</resources>

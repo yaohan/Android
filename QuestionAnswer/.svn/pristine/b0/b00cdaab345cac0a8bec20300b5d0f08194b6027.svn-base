@@ -1,0 +1,73 @@
+package com.ssdut411.app.questionanswer.application;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.api.volley.VolleyManager;
+import com.ssdut411.app.questionanswer.exception.BaseExceptionHandler;
+import com.ssdut411.app.questionanswer.model.model.SelfTestModel;
+import com.ssdut411.app.questionanswer.utils.L;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
+/**
+ * Created by yao_han on 2015/12/22.
+ */
+public class MainApplication extends BaseApplication {
+    // 单例一个MainApplication
+    private static MainApplication instance;
+
+    private String userId = "1";
+    private List<SelfTestModel> selfTestModelList;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public List<SelfTestModel> getSelfTestModelList() {
+        return selfTestModelList;
+    }
+
+    public void setSelfTestModelList(List<SelfTestModel> selfTestModelList) {
+        this.selfTestModelList = selfTestModelList;
+    }
+
+    /**
+     * 得到MainApplication实例
+     *
+     * @return
+     */
+    public static MainApplication getInstance() {
+        return MainApplication.instance;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+
+        // 打印日志信息
+        L.isDebug = true;
+
+        // 初始化Volley
+        VolleyManager.init(applicationContext);
+        L.i("初始化Volley");
+    }
+
+
+    /**
+     * 获取默认的未捕获异常处理器
+     */
+    @Override
+    public BaseExceptionHandler getDefaultUncaughtExceptionHandler() {
+//        return new CrashExceptionHandler(applicationContext);
+        return null;
+    }
+
+}

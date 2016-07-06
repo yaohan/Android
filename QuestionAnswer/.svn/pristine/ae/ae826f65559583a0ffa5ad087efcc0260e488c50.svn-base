@@ -1,0 +1,42 @@
+package com.ssdut411.app.questionanswer.model.Resp;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by yao_han on 2015/12/23.
+ */
+public class GetSchoolResp extends BaseResp{
+    private Map<String,Object> schoolDetail;
+    private List<String> provinceList;
+    private List<String> schoolList;
+
+    public static String DESC_SUCCESS = "获取成功";
+
+    public GetSchoolResp() {
+    }
+
+    public List<String> getSchoolList() {
+        return schoolList;
+    }
+
+    public void setSchoolList(List<String> schoolList) {
+        this.schoolList = schoolList;
+    }
+
+    public Map<String, Object> getSchoolDetail() {
+        return schoolDetail;
+    }
+
+    public void setSchoolDetail(Map<String, Object> schoolDetail) {
+        this.schoolDetail = schoolDetail;
+    }
+
+    public List<String> getProvinceList() {
+        return provinceList;
+    }
+
+    public void setProvinceList(List<String> provinceList) {
+        this.provinceList = provinceList;
+    }
+}

@@ -1,0 +1,105 @@
+package com.ssdut411.app.questionanswer.activity.question;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+import com.ssdut411.app.questionanswer.activity.system.CommonAdapter;
+import com.ssdut411.app.questionanswer.model.model.QuestionModel;
+import com.ssdut411.app.questionanswer.model.model.SelfTestModel;
+import com.ssdut411.app.questionanswer.utils.L;
+import com.ssdut411.app.questionanswer.utils.T;
+import com.ssdut411.app.questionanswer.widget.GridViewForScrollView;
+import com.ssdut411.app.questionanswer.widget.ListViewForScrollView;
+import com.ssdut411.app.questionanswer.widget.ViewPagerIndicator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Created by yao_han on 2015/12/1.
+ */
+public class ReportCardActivity extends BaseActivity {
+
+    private SelfTestModel selfTestModel;
+    private ViewPager vpReport;
+    private List<Fragment> fragmentList;
+    private String source;
+    private ViewPagerIndicator mIndicator;
+
+    @Override
+    protected String initTitle() {
+        return getString(R.string.report_card);
+    }
+
+    @Override
+    protected int initMenu() {
+        return 0;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_report_card;
+    }
+
+    @Override
+    protected void initViews() {
+        vpReport = getViewPager(R.id.vp_report_card_viewpager);
+        mIndicator = (ViewPagerIndicator)findViewById(R.id.id_indicator);
+    }
+
+    @Override
+    protected void loadData() {
+        selfTestModel = (SelfTestModel) getIntent().getSerializableExtra("data");
+    }
+
+    @Override
+    protected void showView() {
+        source = getIntent().getStringExtra("source");
+        setCanBack();
+
+        initDatas();
+
+
+    }
+
+    private void initDatas() {
+        EvaluationFragment evaluationFragment = EvaluationFragment.newInstance(selfTestModel, source);
+        TopicDetailFragment topicDetailFragment = TopicDetailFragment.newInstance(selfTestModel);
+        fragmentList = new ArrayList<Fragment>();
+        fragmentList.add(evaluationFragment);
+        fragmentList.add(topicDetailFragment);
+
+        FragmentPagerAdapter mAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public int getCount() {
+                return fragmentList.size();
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                return fragmentList.get(position);
+            }
+        };
+        List<String> mDatas = Arrays.asList(getString(R.string.evaluation_situation),getString(R.string.topic_detail));
+//        mIndicator.setTabItemTitles(mDatas);
+        vpReport.setAdapter(mAdapter);
+        mIndicator.setViewPager(vpReport,0);
+    }
+}

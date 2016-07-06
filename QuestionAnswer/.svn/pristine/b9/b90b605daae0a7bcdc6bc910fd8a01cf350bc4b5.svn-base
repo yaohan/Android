@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ssdut411.app.questionanswer"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="23" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="com.ssdut411.app.questionanswer.application.MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/role_student"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity android:name="com.ssdut411.app.questionanswer.activity.system.MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.SelectPointActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.TestHistoryActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.AnswerCardActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.ClassRankActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.LookQuestionActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.MyHomeWorkActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.MyTestActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.QuestionActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.ReportCardActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.teacher.CheckHomeworkActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.teacher.MainPageActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.teacher.PostHomeworkActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.teacher.SelectStudentActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.teacher.StudentListActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.student.InfoActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.person.SelectRoleActivity" />
+        <activity android:name="com.ssdut411.app.questionanswer.activity.question.ListViewActivity" />
+    </application>
+
+</manifest>

@@ -1,0 +1,165 @@
+package com.ssdut411.app.questionanswer.application;
+
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.provider.Settings;
+import android.provider.Telephony;
+import android.telephony.TelephonyManager;
+import android.widget.ImageView;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.api.volley.VolleyManager;
+import com.ssdut411.app.questionanswer.exception.BaseExceptionHandler;
+import com.ssdut411.app.questionanswer.model.Resp.LoginResp;
+import com.ssdut411.app.questionanswer.model.event.DrawerInfoEvent;
+import com.ssdut411.app.questionanswer.model.model.SelfTestModel;
+import com.ssdut411.app.questionanswer.model.model.User;
+import com.ssdut411.app.questionanswer.model.model.UserModel;
+import com.ssdut411.app.questionanswer.utils.GsonUtils;
+import com.ssdut411.app.questionanswer.utils.L;
+import com.ssdut411.app.questionanswer.utils.SPUtils;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import de.greenrobot.event.EventBus;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
+/**
+ * Created by yao_han on 2015/12/22.
+ */
+public class MainApplication extends BaseApplication {
+    public static int ROLE_NULL = -1;
+    public static int ROLE_PUPILS = 1;
+    public static int ROLE_TEACHER = 2;
+    public static int ROLE_PARENT = 3;
+
+    // 单例一个MainApplication
+    private static MainApplication instance;
+
+    private String userId;
+    private boolean login;
+    private int role;
+    private UserModel user;
+
+    private List<SelfTestModel> selfTestModelList;
+    private String uniqueId;
+
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        L.i("set uniqueId"+uniqueId);
+        SPUtils.put(context,"uniqueId",uniqueId);
+        this.uniqueId = uniqueId;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        L.i("set role"+role);
+        SPUtils.put(context,"role",role);
+        this.role = role;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        L.i("set userId"+userId);
+        SPUtils.put(context,"userId",userId);
+        this.userId = userId;
+    }
+
+    public boolean getLogin() {
+        return login;
+    }
+
+    public void setLogin(boolean login) {
+        L.i("set login" + login);
+        SPUtils.put(context, "login", login);
+        this.login = login;
+    }
+
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        L.i("user put:" + GsonUtils.gsonToJsonString(user));
+        SPUtils.put(context, "user", GsonUtils.gsonToJsonString(user));
+        String strUser = SPUtils.get(context,"user","").toString();
+        L.i("strUser:"+strUser);
+//        L.i("user get:" + GsonUtils.gsonToObject(SPUtils.get(context, "user", new UserModel()).toString(),UserModel.class));
+        this.user = user;
+    }
+
+    public List<SelfTestModel> getSelfTestModelList() {
+        return selfTestModelList;
+    }
+
+    public void setSelfTestModelList(List<SelfTestModel> selfTestModelList) {
+        this.selfTestModelList = selfTestModelList;
+    }
+
+    /**
+     * 得到MainApplication实例
+     *
+     * @return
+     */
+    public static MainApplication getInstance() {
+        return MainApplication.instance;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+
+        // 打印日志信息
+        L.isDebug = true;
+//        SPUtils.clear(context);
+        L.i("static");
+        L.i("context == "+(context == null));
+        role = (Integer)SPUtils.get(context,"role",ROLE_NULL);
+        userId = (String)SPUtils.get(context,"userId","");
+        login = (Boolean)SPUtils.get(context,"login",false);
+        uniqueId = (String)SPUtils.get(context,"uniqueId","");
+        user = GsonUtils.gsonToObject(SPUtils.get(context,"user","").toString(),UserModel.class);
+        if(user == null){
+            EventBus.getDefault().post(new DrawerInfoEvent(login,"",""));
+        }else{
+            EventBus.getDefault().post(new DrawerInfoEvent(login,user.getRealName(),user.getClassName()));
+        }
+
+        L.i("role:" + role + " userId:" + userId + " login:" + login + " uniqueId:" + uniqueId + " user:"+user);
+        // 初始化Volley
+        VolleyManager.init(context);
+        L.i("初始化Volley");
+    }
+
+
+    /**
+     * 获取默认的未捕获异常处理器
+     */
+    @Override
+    public BaseExceptionHandler getDefaultUncaughtExceptionHandler() {
+//        return new CrashExceptionHandler(applicationContext);
+        return null;
+    }
+
+    public void clear(){
+        role = LoginResp.ROLE_NULL;
+        userId = "";
+        login = false;
+    }
+}

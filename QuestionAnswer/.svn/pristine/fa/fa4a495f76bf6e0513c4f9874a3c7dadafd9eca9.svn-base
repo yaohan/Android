@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background_white"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <com.ssdut411.app.questionanswer.widget.ViewPagerIndicator
+        android:id="@+id/id_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="?attr/colorPrimary"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/evaluation_situation"
+            android:textColor="?attr/font_white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/topic_detail"
+            android:textColor="?attr/font_gray"
+            android:textSize="16sp" />
+    </com.ssdut411.app.questionanswer.widget.ViewPagerIndicator>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/margin_space_16"
+        android:background="?attr/background_white" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_report_card_viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/background_white" />
+
+</LinearLayout>

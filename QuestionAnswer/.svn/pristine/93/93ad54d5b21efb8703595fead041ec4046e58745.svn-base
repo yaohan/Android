@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background_white"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_question_viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="?attr/background_white" />
+
+    <include layout="@layout/divide_gray_horizontal" />
+
+    <LinearLayout
+        android:id="@+id/ll_question_test"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/touch_view_48">
+
+        <LinearLayout
+            android:id="@+id/ll_question_collection"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_normal_item"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/touch_icon_24"
+                android:layout_height="@dimen/touch_icon_24"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/collection"
+                android:textColor="?attr/font_black"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="@dimen/divide_height"
+            android:layout_height="fill_parent"
+            android:background="?attr/divide_gray" />
+
+        <LinearLayout
+            android:id="@+id/ll_question_time"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_normal_item"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/touch_icon_24"
+                android:layout_height="@dimen/touch_icon_24"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_question_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/time"
+                android:textColor="?attr/font_black"
+                android:textSize="@dimen/font_size_normal" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_question_check"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/touch_view_48">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/touch_view_48"
+            android:gravity="center"
+            android:text="@string/change_question"
+            android:textColor="?attr/font_black"
+            android:textSize="@dimen/font_size_normal" />
+    </LinearLayout>
+
+
+</LinearLayout><!-- From: file:/D:/Android/Project/QuestionAnswer/app/src/main/res/layout/activity_question.xml -->

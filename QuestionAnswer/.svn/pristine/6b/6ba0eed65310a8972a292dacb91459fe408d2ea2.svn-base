@@ -1,0 +1,156 @@
+package com.ssdut411.app.questionanswer.activity.student;
+
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.person.LoginActivity;
+import com.ssdut411.app.questionanswer.activity.person.SelectRoleActivity;
+import com.ssdut411.app.questionanswer.activity.question.MyHomeWorkActivity;
+import com.ssdut411.app.questionanswer.activity.question.MyTestActivity;
+import com.ssdut411.app.questionanswer.activity.question.SelectPointActivity;
+import com.ssdut411.app.questionanswer.activity.question.TestHistoryActivity;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+import com.ssdut411.app.questionanswer.activity.system.MainActivity;
+import com.ssdut411.app.questionanswer.model.event.DrawerInfoEvent;
+import com.ssdut411.app.questionanswer.utils.GsonUtils;
+import com.ssdut411.app.questionanswer.utils.L;
+import com.ssdut411.app.questionanswer.utils.T;
+import com.ssdut411.app.questionanswer.widget.BaseDialog;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import de.greenrobot.event.EventBus;
+
+/**
+ * Created by yao_han on 2015/11/29.
+ */
+public class MainPageActivity extends BaseActivity {
+
+    private BaseDialog loginDialog;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(context);
+    }
+
+    @Override
+    protected int initMenu() {
+        return 0;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initViews() {
+        EventBus.getDefault().unregister(context);
+        getLinearLayout(R.id.ll_main_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTestHistoryActivity();
+            }
+        });
+        getLinearLayout(R.id.ll_main_homework).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginDialog.show();
+            }
+        });;
+        getLinearLayout(R.id.ll_main_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startErrorQuestionActivity();
+            }
+        });;
+        getLinearLayout(R.id.ll_main_collection).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCollectionQuestionActivity();
+            }
+        });;
+        getLinearLayout(R.id.ll_main_analysis).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAnalysisActivity();
+            }
+        });;
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+
+    @Override
+    protected void showView() {
+        setBackTips();
+        setDrawer();
+        setTitle("学生"+getString(R.string.app_name));
+        loginDialog = initLoginDialog();
+    }
+
+    private void startAnalysisActivity(){
+        T.showShort(context,getString(R.string.function_not_finished));
+    }
+    private void startErrorQuestionActivity() {
+        T.showShort(context,getString(R.string.function_not_finished));
+    }
+
+    private void startCollectionQuestionActivity() {
+        T.showShort(context,getString(R.string.function_not_finished));
+    }
+
+    private void startTestHistoryActivity() {
+        Intent intent = new Intent(context, TestHistoryActivity.class);
+        startActivity(intent);
+    }
+
+    private void startLoginActivity() {
+        Intent intent = new Intent(context, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    private BaseDialog initLoginDialog() {
+        return new BaseDialog.Builder(this).setTitle(getString(R.string.please_login))
+                .setDesc(getString(R.string.login_for_more_function))
+                .setPositiveButton(getString(R.string.sure), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loginDialog.dismiss();
+                        startLoginActivity();
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loginDialog.dismiss();
+                    }
+                }).getDialog();
+    }
+
+    public void onEventMainThread(DrawerInfoEvent event) {
+        L.i("event " + event.getLogin() + event.getRealName() + event.getClazz());
+        if (event.getLogin()) {
+            getTextView(R.id.tv_menu_register_login).setVisibility(View.VISIBLE);
+            getLinearLayout(R.id.ll_menu_info).setVisibility(View.GONE);
+        } else {
+            getTextView(R.id.tv_menu_register_login).setVisibility(View.GONE);
+            getLinearLayout(R.id.ll_menu_info).setVisibility(View.VISIBLE);
+
+            getTextView(R.id.tv_drawer_name).setText(event.getRealName());
+            getTextView(R.id.tv_drawer_class).setText(event.getClazz());
+        }
+    }
+}

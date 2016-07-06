@@ -1,0 +1,40 @@
+package com.ssdut411.app.questionanswer.model.event;
+
+/**
+ * Created by yao_han on 2016/3/25.
+ */
+public class DrawerInfoEvent {
+    private Boolean login;
+    private String realName;
+    private String clazz;
+
+    public DrawerInfoEvent(Boolean login, String realName, String clazz) {
+        this.login = login;
+        this.realName = realName;
+        this.clazz = clazz;
+    }
+
+    public Boolean getLogin() {
+        return login;
+    }
+
+    public void setLogin(Boolean login) {
+        this.login = login;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(String clazz) {
+        this.clazz = clazz;
+    }
+}

@@ -1,0 +1,249 @@
+package com.ssdut411.app.questionanswer.activity.question;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+import com.ssdut411.app.questionanswer.activity.system.CommonAdapter;
+import com.ssdut411.app.questionanswer.activity.system.ViewHolder;
+import com.ssdut411.app.questionanswer.application.MainApplication;
+import com.ssdut411.app.questionanswer.core.ActionCallbackListener;
+import com.ssdut411.app.questionanswer.core.AppAction;
+import com.ssdut411.app.questionanswer.core.AppActionImpl;
+import com.ssdut411.app.questionanswer.model.Req.GetCollectionsReq;
+import com.ssdut411.app.questionanswer.model.Req.GetErrorsReq;
+import com.ssdut411.app.questionanswer.model.Resp.GetClazzResp;
+import com.ssdut411.app.questionanswer.model.Resp.GetCollectionsResp;
+import com.ssdut411.app.questionanswer.model.Resp.GetErrorsResp;
+import com.ssdut411.app.questionanswer.model.model.ErrorQuestionModel;
+import com.ssdut411.app.questionanswer.model.model.QuestionModel;
+import com.ssdut411.app.questionanswer.utils.GsonUtils;
+import com.ssdut411.app.questionanswer.utils.L;
+import com.ssdut411.app.questionanswer.utils.T;
+import com.ssdut411.app.questionanswer.widget.EmptyLayout;
+
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by yao_han on 2016/3/9.
+ */
+public class ErrorOrCollectQuestionActivity extends BaseActivity {
+    private boolean state;              //true：error false:collect
+    private ExpandableListView lvList;
+    private List<String> pointList;
+    private Map<String,List<ErrorQuestionModel>> errorQuestionMap;
+    private Map<String,List<QuestionModel>> questionMap;
+    private EmptyLayout emptyLayout;
+    @Override
+    protected int initMenu() {
+        return 0;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_error_question;
+    }
+
+    @Override
+    protected void initViews() {
+        lvList = getExpandableListView(R.id.lv_list);
+        lvList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                startLookQuestionActivity(groupPosition, childPosition);
+                return false;
+            }
+        });
+        emptyLayout = new EmptyLayout(context,lvList);
+        emptyLayout.showLoading();
+    }
+
+    private void startLookQuestionActivity(int groupPosition, int childPosition) {
+        Intent intent = new Intent(context,LookQuestionActivity.class);
+        intent.putExtra(getString(R.string.string_state),QuestionFragment.STATE_LOOK);
+        if(state){
+            intent.putExtra(getString(R.string.string_question),errorQuestionMap.get(pointList.get(groupPosition).toString()).get(childPosition).getQuestionModel());
+        }else{
+            intent.putExtra(getString(R.string.string_question),questionMap.get(pointList.get(groupPosition).toString()).get(childPosition));
+        }
+        startActivity(intent);
+    }
+
+    @Override
+    protected void loadData() {
+        String target = getIntent().getStringExtra(getString(R.string.string_target));
+        if(target.equals(getString(R.string.my_error))){
+            state = true;
+            getErrors();
+        }else if(target.equals(getString(R.string.my_collection))){
+            state = false;
+            getCollection();
+        }
+
+    }
+
+
+    @Override
+    protected void showView() {
+        if(state){
+            setTitle(getString(R.string.my_error));
+        }else{
+            setTitle(getString(R.string.my_collection));
+        }
+        setCanBack();
+    }
+
+    public void getErrors() {
+        AppAction action = new AppActionImpl(context);
+        GetErrorsReq getErrorsReq = new GetErrorsReq();
+        getErrorsReq.setId(MainApplication.getInstance().getUserId());
+        action.getErrors(getErrorsReq, new ActionCallbackListener<GetErrorsResp>() {
+            @Override
+            public void onSuccess(GetErrorsResp data) {
+                if (data.getResult() == GetErrorsResp.RESULT_SUCCESS) {
+                    pointList = data.getPointList();
+                    errorQuestionMap = data.getQuestionList();
+                    L.i(errorQuestionMap.toString());
+                    if (pointList.size() == 0) {
+                        emptyLayout.showEmpty();
+                    } else {
+                        setList();
+                    }
+                } else {
+                    emptyLayout.showError();
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                emptyLayout.showError();
+            }
+        });
+    }
+    public void getCollection() {
+        AppAction action = new AppActionImpl(context);
+        GetCollectionsReq getCollectionsReq= new GetCollectionsReq();
+        getCollectionsReq.setId(MainApplication.getInstance().getUserId());
+        action.getCollections(getCollectionsReq, new ActionCallbackListener<GetCollectionsResp>() {
+            @Override
+            public void onSuccess(GetCollectionsResp data) {
+                if (data.getResult() == GetErrorsResp.RESULT_SUCCESS) {
+                    pointList = data.getPointList();
+                    questionMap = data.getQuestionList();
+                    L.i(GsonUtils.gsonToJsonString(questionMap));
+                    if (pointList.size() == 0) {
+                        emptyLayout.showEmpty();
+                    } else {
+                        setList();
+                    }
+                } else {
+                    emptyLayout.showError();
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                emptyLayout.showError();
+            }
+        });
+    }
+
+    private void setList() {
+        MyAdapter adapter = new MyAdapter();
+        lvList.setAdapter(adapter);
+    }
+
+    class MyAdapter extends BaseExpandableListAdapter{
+        @Override
+        public int getGroupCount() {
+            return pointList.size();
+        }
+
+        @Override
+        public int getChildrenCount(int groupPosition) {
+            if(state){
+                L.i("errorQuestionMap:"+errorQuestionMap);
+                L.i("groupPosition:"+groupPosition);
+                L.i("string:"+getGroup(groupPosition).toString());
+                L.i("group:"+errorQuestionMap.get(getGroup(groupPosition).toString()));
+                L.i("size:"+errorQuestionMap.get(getGroup(groupPosition).toString()).size());
+                return errorQuestionMap.get(getGroup(groupPosition).toString()).size();
+            }else{
+                return questionMap.get(getGroup(groupPosition).toString()).size();
+            }
+        }
+
+        @Override
+        public Object getGroup(int groupPosition) {
+            return pointList.get(groupPosition);
+        }
+
+        @Override
+        public Object getChild(int groupPosition, int childPosition) {
+            if(state){
+                return errorQuestionMap.get(getGroup(groupPosition).toString()).get(childPosition).getQuestionModel().getStem();
+            }else{
+                return questionMap.get(getGroup(groupPosition).toString()).get(childPosition).getStem();
+            }
+        }
+
+        @Override
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        @Override
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
+        @Override
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+            if(convertView == null){
+                LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.item_listview,null);
+            }
+            TextView tv = (TextView) convertView.findViewById(R.id.item_center);
+            tv.setText(getGroup(groupPosition).toString());
+
+            TextView count = ((TextView) convertView.findViewById(R.id.item_right));
+            if(state){
+                count.setText(errorQuestionMap.get(pointList.get(groupPosition).toString()).size()+"");
+            }else{
+                count.setText(questionMap.get(pointList.get(groupPosition).toString()).size()+"");
+            }
+            return convertView;
+        }
+
+        @Override
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+            if(convertView == null){
+                LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = inflater.inflate(R.layout.item_second_listview,null);
+            }
+            TextView tv = (TextView) convertView.findViewById(R.id.item_center);
+            tv.setText(getChild(groupPosition,childPosition).toString());
+            return convertView;
+        }
+
+        @Override
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return true;
+        }
+    }
+}

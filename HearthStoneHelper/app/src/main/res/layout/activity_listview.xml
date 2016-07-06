@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/layout_toolbar"/>
+    <RelativeLayout
+        android:id="@+id/rl_add"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <EditText
+            android:id="@+id/et_add"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/font_black"/>
+        <TextView
+            android:id="@+id/bt_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="添加"
+            android:padding="@dimen/padding_8"
+            android:background="@color/color_primary"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center">
+        <ListView
+            android:id="@+id/lv_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"/>
+    </LinearLayout>
+
+</LinearLayout>

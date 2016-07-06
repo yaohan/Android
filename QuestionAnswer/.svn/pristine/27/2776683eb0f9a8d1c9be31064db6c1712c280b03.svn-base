@@ -1,0 +1,148 @@
+package com.ssdut411.app.questionanswer.model.model;
+
+
+import java.io.Serializable;
+
+/**
+ * Created by yao_han on 2016/3/24.
+ */
+public class UserModel implements Serializable{
+    private String id;             //id
+    private int role;
+    private String realName;        //姓名
+    private Integer age;             //年龄
+    private String address;          //地址
+    private String gender;           //性别    男:male,女:female
+    private String headPortrait;    //头像url
+    private String pId;              //家长id
+    private String content;         //联系方式
+    private String classId;         //班级id
+    private String className;       //班级名字
+    private String schoolId;        //学校id
+    private String schoolName;      //学校名字
+    private String subject;         //学科
+    private String childId;
+
+    public UserModel() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getHeadPortrait() {
+        return headPortrait;
+    }
+
+    public void setHeadPortrait(String headPortrait) {
+        this.headPortrait = headPortrait;
+    }
+
+    public String getpId() {
+        return pId;
+    }
+
+    public void setpId(String pId) {
+        this.pId = pId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getChildId() {
+        return childId;
+    }
+
+    public void setChildId(String childId) {
+        this.childId = childId;
+    }
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actions_history"
+        android:title="@string/sure"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+
+</menu><!-- From: file:/D:/Android/Project/QuestionAnswer/app/src/main/res/menu/menu_sure.xml -->

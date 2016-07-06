@@ -1,0 +1,81 @@
+package com.ssdut411.app.questionanswer.widget;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.ssdut411.app.questionanswer.R;
+
+
+/**
+ * Created by yao_han on 2015/11/30.
+ */
+public class BaseDialog extends Dialog{
+    public BaseDialog(Context context, int theme) {
+        super(context,theme);
+    }
+
+    public static class Builder{
+        private Context context;
+
+        private TextView tvTitle;
+        private TextView tvDesc;
+        private TextView btSure;
+        private TextView btCancel;
+
+        private BaseDialog dialog;
+
+        public Builder(Context context) {
+            this.context = context;
+            dialog = create();
+        }
+
+        public BaseDialog getDialog() {
+            return dialog;
+        }
+
+        private BaseDialog create(){
+            LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = layoutInflater.inflate(R.layout.dialog_easy,null);
+
+            dialog = new BaseDialog(context,R.style.Dialog);
+            dialog.addContentView(layout,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            dialog.setContentView(layout);
+            tvTitle = (TextView) layout.findViewById(R.id.tv_dialog_title);
+            tvDesc = (TextView)layout.findViewById(R.id.tv_dialog_desc);
+            btSure = (TextView)layout.findViewById(R.id.bt_dialog_sure);
+            btCancel = (TextView)layout.findViewById(R.id.bt_dialog_cancel);
+//            btSure = (Button)layout.findViewById(R.id.bt_dialog_sure);
+//            btCancel = (Button)layout.findViewById(R.id.bt_dialog_cancel);
+            return dialog;
+        }
+        public Builder setTitle(String title){
+            tvTitle.setText(title);
+            return this;
+        }
+        public Builder setDesc(String desc){
+            tvDesc.setText(desc);
+            return this;
+        }
+        public Builder setPositiveButton(String sure, View.OnClickListener listener){
+            if(sure.equals("")){
+                btSure.setVisibility(View.GONE);
+            }
+            btSure.setText(sure);
+            btSure.setOnClickListener(listener);
+            return this;
+        }
+        public Builder setNegativeButton(String cancel, View.OnClickListener listener){
+            if(cancel.equals("")){
+                btCancel.setVisibility(View.GONE);
+            }else{
+                btCancel.setText(cancel);
+                btCancel.setOnClickListener(listener);
+            }
+            return this;
+        }
+    }
+}

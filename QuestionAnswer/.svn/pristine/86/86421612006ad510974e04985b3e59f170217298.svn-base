@@ -1,0 +1,83 @@
+package com.ssdut411.app.questionanswer.activity.question;
+
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+import com.ssdut411.app.questionanswer.model.model.QuestionModel;
+import com.ssdut411.app.questionanswer.utils.L;
+
+/**
+ * Created by yao_han on 2015/12/1.
+ */
+public class LookQuestionActivity extends BaseActivity {
+    private MenuItem menuCard;
+    private boolean isCollection = false;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        L.i("menu start");
+        menuCard = menu.add(0, 1, 1, getString(R.string.collection));
+        menuCard.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menuCard.setIcon(R.mipmap.icon_question_uncollection);
+        menuCard.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (isCollection) {
+                    isCollection = false;
+                    menuCard.setIcon(R.mipmap.icon_question_uncollection);
+                } else {
+                    isCollection = true;
+                    menuCard.setIcon(R.mipmap.icon_question_collection);
+                }
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected int initMenu() {
+        return 0;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_look_question;
+    }
+
+    @Override
+    protected void initViews() {
+        mToolbar.setNavigationIcon(R.mipmap.ic_arrow_back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void showView() {
+
+        setTitle(getString(R.string.question_analysical));
+        setCanBack();
+
+        QuestionModel question = null;
+        question = (QuestionModel) getIntent().getSerializableExtra("question");
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        QuestionFragment fragment = QuestionFragment.newInstance(question, QuestionFragment.STATE_LOOK);
+        fragmentTransaction.add(R.id.fl_look_layout, fragment);
+        fragmentTransaction.commit();
+    }
+}

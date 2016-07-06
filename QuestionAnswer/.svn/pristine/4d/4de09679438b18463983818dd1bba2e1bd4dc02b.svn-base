@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/homework_background">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/touch_view_64"
+            android:paddingLeft="@dimen/margin_space_16"
+            android:text="今天"
+            android:textSize="@dimen/font_size_menu"
+            android:textStyle="bold"
+            android:textColor="@color/font_gray"
+            android:gravity="center_vertical"/>
+        <com.ssdut411.app.questionanswer.widget.ListViewForScrollView
+            android:id="@+id/lv_today_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="@dimen/margin_space_16"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/touch_view_64"
+            android:paddingLeft="@dimen/margin_space_16"
+            android:text="以前"
+            android:textStyle="bold"
+            android:textSize="@dimen/font_size_menu"
+            android:textColor="@color/font_gray"
+            android:gravity="center_vertical"/>
+        <com.ssdut411.app.questionanswer.widget.ListViewForScrollView
+            android:id="@+id/lv_post_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="@dimen/margin_space_16"/>
+    </LinearLayout>
+    </ScrollView>
+</LinearLayout>

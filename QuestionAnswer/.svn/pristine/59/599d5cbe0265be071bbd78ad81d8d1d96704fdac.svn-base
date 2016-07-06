@@ -1,0 +1,86 @@
+package com.ssdut411.app.questionanswer.activity.person;
+
+import android.content.Intent;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+import com.ssdut411.app.questionanswer.utils.ActivityStackUtils;
+
+/**
+ * Created by yao_han on 2015/12/1.
+ */
+public class SelectRoleActivity extends BaseActivity implements View.OnClickListener{
+    private LinearLayout llStudent;
+    private LinearLayout llTeacher;
+    private LinearLayout llParent;
+
+    @Override
+    protected int initMenu() {
+        return R.menu.menu_null;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_select_role;
+    }
+
+    @Override
+    protected void initViews() {
+        llStudent = getLinearLayout(R.id.ll_select_student);
+        llTeacher = getLinearLayout(R.id.ll_select_teacher);
+        llParent = getLinearLayout(R.id.ll_select_parent);
+
+        llStudent.setOnClickListener(this);
+        llTeacher.setOnClickListener(this);
+        llParent.setOnClickListener(this);
+
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void showView() {
+        setTitle(getString(R.string.change_role));
+        setCanBack();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.ll_select_student:
+                startStudentMainActivity();
+                break;
+            case R.id.ll_select_teacher:
+                startTeacherMainActivity();
+                break;
+            case R.id.ll_select_parent:
+                startParentMainActivity();
+                break;
+        }
+
+    }
+
+    private void startStudentMainActivity() {
+        Intent intent  = new Intent(SelectRoleActivity.this, com.ssdut411.app.questionanswer.activity.student.MainPageActivity.class);
+        ActivityStackUtils.getInstance().finishAllActivity();
+        startActivity(intent);
+    }
+
+    private void startTeacherMainActivity() {
+        Intent intent  = new Intent(SelectRoleActivity.this, com.ssdut411.app.questionanswer.activity.teacher.MainPageActivity.class);
+        ActivityStackUtils.getInstance().finishAllActivity();
+        startActivity(intent);
+    }
+
+    private void startParentMainActivity() {
+        Intent intent  = new Intent(SelectRoleActivity.this, com.ssdut411.app.questionanswer.activity.parent.MainPageActivity.class);
+        ActivityStackUtils.getInstance().finishAllActivity();
+        startActivity(intent);
+        
+    }
+}

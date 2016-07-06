@@ -1,0 +1,262 @@
+package com.ssdut411.app.questionanswer.activity.person;
+
+import android.content.Intent;
+import android.graphics.drawable.StateListDrawable;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.ssdut411.app.questionanswer.R;
+import com.ssdut411.app.questionanswer.activity.student.MainPageActivity;
+import com.ssdut411.app.questionanswer.activity.system.BaseActivity;
+import com.ssdut411.app.questionanswer.activity.system.MainActivity;
+import com.ssdut411.app.questionanswer.application.MainApplication;
+import com.ssdut411.app.questionanswer.core.ActionCallbackListener;
+import com.ssdut411.app.questionanswer.core.AppAction;
+import com.ssdut411.app.questionanswer.core.AppActionImpl;
+import com.ssdut411.app.questionanswer.model.Req.FinishInfoReq;
+import com.ssdut411.app.questionanswer.model.Req.GetInfoReq;
+import com.ssdut411.app.questionanswer.model.Resp.FinishInfoResp;
+import com.ssdut411.app.questionanswer.model.Resp.GetInfoResp;
+import com.ssdut411.app.questionanswer.model.Resp.LoginResp;
+import com.ssdut411.app.questionanswer.model.event.DrawerInfoEvent;
+import com.ssdut411.app.questionanswer.model.model.UserModel;
+import com.ssdut411.app.questionanswer.utils.L;
+import com.ssdut411.app.questionanswer.utils.T;
+
+import de.greenrobot.event.EventBus;
+
+/**
+ * Created by LENOVO on 2016/1/13.
+ */
+public class InfoActivity extends BaseActivity{
+    private static int REQUEST_CODE = 0;
+
+    private String gender = "";
+    private String schoolId = "";
+    private String classId = "";
+    private ImageView ivHead;
+    private EditText etName;
+    private Button btMale;
+    private Button btFemale;
+    private EditText etAge;
+    private EditText etSchool;
+    private EditText etClass;
+    private EditText etParent;
+    private EditText etContent;
+    private EditText etAddress;
+
+
+    @Override
+    protected int initMenu() {
+        return R.menu.menu_sure;
+    }
+
+    @Override
+    protected int initContentView() {
+        return R.layout.activity_info_student;
+    }
+
+    @Override
+    protected void initViews() {
+        ivHead = getImageView(R.id.iv_info_head);
+        etName = getEditText(R.id.et_info_name);
+        btMale = getButton(R.id.bt_info_male);
+        btFemale = getButton(R.id.bt_info_female);
+        etAge = getEditText(R.id.et_info_age);
+        etSchool = getEditText(R.id.et_info_school);
+        etClass = getEditText(R.id.et_info_class);
+        etParent = getEditText(R.id.et_info_parent);
+        etContent = getEditText(R.id.et_info_contact);
+        etAddress = getEditText(R.id.et_info_address);
+
+        btMale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gender = "male";
+                btMale.setBackgroundResource(R.color.title_pressed);
+                btFemale.setBackgroundResource(R.color.theme_green);
+            }
+        });
+        btFemale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gender = "female";
+                btMale.setBackgroundResource(R.color.theme_green);
+                btFemale.setBackgroundResource(R.color.title_pressed);
+            }
+        });
+
+        etSchool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,SelectSchoolActivity.class);
+                intent.putExtra("target","school");
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
+
+        etClass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(schoolId.equals("")){
+                    T.showShort(context,"请先选择学校");
+                }else{
+                    Intent intent = new Intent(context,SelectSchoolActivity.class);
+                    intent.putExtra("target","class");
+                    intent.putExtra("schoolId",schoolId);
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+            }
+        });
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.actions_sure:
+                        sure();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void sure() {
+        if(check()){
+            AppAction action = new AppActionImpl(context);
+            UserModel userModel = new UserModel();
+            userModel.setId(MainApplication.getInstance().getUserId());
+            userModel.setRole(MainApplication.getInstance().getRole());
+            userModel.setRealName(etName.getText().toString());
+            userModel.setGender(gender);
+            userModel.setAge(Integer.parseInt(etAge.getText().toString()));
+            userModel.setSchoolId(schoolId);
+            userModel.setSchoolName(etSchool.getText().toString());
+            userModel.setClassId(classId);
+            userModel.setClassName(etClass.getText().toString());
+            userModel.setContent(etContent.getText().toString());
+            userModel.setAddress(etAddress.getText().toString());
+            MainApplication.getInstance().setUser(userModel);
+            FinishInfoReq finishInfoReq = new FinishInfoReq();
+            finishInfoReq.setUserModel(userModel);
+            action.finishInfo(finishInfoReq, new ActionCallbackListener<FinishInfoResp>() {
+                @Override
+                public void onSuccess(FinishInfoResp data) {
+                    T.showShort(context, data.getDesc());
+                    EventBus.getDefault().post(new DrawerInfoEvent(true, etName.getText().toString(), etClass.getText().toString()));
+                    EventBus.getDefault().post(new DrawerInfoEvent(true, etName.getText().toString(), etClass.getText().toString()));
+                    Intent intent;
+                    if(MainApplication.getInstance().getRole() == LoginResp.ROLE_PUPILS){
+                        intent = new Intent(context, MainPageActivity.class);
+                    }else if(MainApplication.getInstance().getRole() == LoginResp.ROLE_TEACHER){
+                        intent = new Intent(context, com.ssdut411.app.questionanswer.activity.teacher.MainPageActivity.class);
+                    }else if(MainApplication.getInstance().getRole() == LoginResp.ROLE_PARENT){
+                        intent = new Intent(context, com.ssdut411.app.questionanswer.activity.parent.MainPageActivity.class);
+                    }else{
+                        intent = new Intent(context, MainActivity.class);
+                    }
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(String message) {
+                    T.showShort(context, getString(R.string.error_message));
+                }
+            });
+        }
+    }
+
+    private boolean check() {
+        if(etName.getText().toString().equals(getString(R.string.empty))){
+            T.showShort(context, "姓名不能为空");
+            return false;
+        }else if(gender.equals(getString(R.string.empty))){
+            T.showShort(context,"请选择性别");
+            return false;
+        }else if(etAge.getText().toString().equals(getString(R.string.empty))){
+            T.showShort(context,"年龄不能为空");
+            return false;
+        }else if(schoolId.equals(getString(R.string.empty))){
+            T.showShort(context,"请选择学校");
+            return false;
+        }else if(classId.equals(getString(R.string.empty))){
+            T.showShort(context,"请选择班级");
+            return false;
+        }else if(etParent.getText().toString().equals(getString(R.string.empty))){
+            T.showShort(context,"请输入家长");
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void loadData() {
+
+    }
+
+    @Override
+    protected void showView() {
+        setTitle("完善信息");
+        setCanBack();
+        setView();
+    }
+
+    private void setView() {
+        AppAction action = new AppActionImpl(context);
+        GetInfoReq getInfoReq = new GetInfoReq();
+        getInfoReq.setId(MainApplication.getInstance().getUserId());
+        action.getInfo(getInfoReq, new ActionCallbackListener<GetInfoResp>() {
+            @Override
+            public void onSuccess(GetInfoResp data) {
+                if(data.getResult() == GetInfoResp.RESULT_SUCCESS){
+                    UserModel userModel = data.getUserModel();
+                    etName.setText(userModel.getRealName());
+                    gender = userModel.getGender();
+                    if(gender.equals("male")){
+                        btMale.setBackgroundResource(R.color.title_pressed);
+                    }else{
+                        btFemale.setBackgroundResource(R.color.title_pressed);
+                    }
+                    etAge.setText(userModel.getAge()+"");
+                    schoolId = userModel.getSchoolId();
+                    etSchool.setText(userModel.getSchoolName());
+                    classId = userModel.getClassId();
+                    etClass.setText(userModel.getClassName());
+//                    etParent.setText(userModel.get);
+                    etContent.setText(userModel.getContent());
+                    etAddress.setText(userModel.getAddress());
+                }else{
+                    T.showShort(context,data.getDesc());
+                }
+            }
+
+            @Override
+            public void onFailure(String message) {
+                T.showShort(context,message);
+            }
+        });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
+            L.i("target"+data.getStringExtra("target"));
+            L.i("className"+data.getStringExtra("className"));
+            L.i("classId"+data.getStringExtra("classId"));
+            if(data.getStringExtra("target").equals("school")){
+                etSchool.setText(data.getStringExtra("schoolName"));
+                schoolId = data.getStringExtra("schoolId");
+            }else{
+                etClass.setText(data.getStringExtra("className"));
+                classId = data.getStringExtra("classId");
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+}

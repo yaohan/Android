@@ -1,0 +1,36 @@
+<resources>
+
+    <style name="DayTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- toolbar（actionbar）颜色 -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <!-- 标题颜色 -->
+        <item name="android:textColorPrimary">@color/font_white</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@color/background_white</item>
+        <item name="android:actionMenuTextColor">@color/font_white</item>
+
+    </style>
+
+    <style name="NightTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- toolbar（actionbar）颜色 -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <!-- 状态栏颜色 -->
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <!-- 标题颜色 -->
+        <item name="android:textColorPrimary">@color/font_white</item>
+        <!-- 窗口的背景颜色 -->
+        <item name="android:windowBackground">@color/background_white</item>
+        <item name="android:actionMenuTextColor">@color/font_white</item>
+    </style>
+    <style name="Dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+</resources>
